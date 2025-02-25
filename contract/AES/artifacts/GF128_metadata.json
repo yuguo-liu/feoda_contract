@@ -1,0 +1,45 @@
+{
+	"compiler": {
+		"version": "0.8.26+commit.8a97fa7a"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contract/AES/aes128-gcm.sol": "GF128"
+		},
+		"evmVersion": "cancun",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contract/AES/aes128-gcm.sol": {
+			"keccak256": "0x456c0be3cf320d42d96765ebb8eb59ad3f8dcb3f307c471cc04b18cf2b42d1e5",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://75025bf1ced60f146cbb9cccebf90ae54e7842f22e046dd26216f207f61ee042",
+				"dweb:/ipfs/QmX929bqzxBdmpPU66MHzYgx29MuDNnMDaU5K2HVunsVVs"
+			]
+		}
+	},
+	"version": 1
+}

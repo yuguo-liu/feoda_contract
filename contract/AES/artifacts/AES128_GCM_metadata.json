@@ -1,0 +1,166 @@
+{
+	"compiler": {
+		"version": "0.8.26+commit.8a97fa7a"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "uint8[16]",
+						"name": "cipher",
+						"type": "uint8[16]"
+					},
+					{
+						"internalType": "uint8[16]",
+						"name": "key",
+						"type": "uint8[16]"
+					}
+				],
+				"name": "aes_dec",
+				"outputs": [
+					{
+						"internalType": "uint8[16]",
+						"name": "",
+						"type": "uint8[16]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint8[16]",
+						"name": "plain",
+						"type": "uint8[16]"
+					},
+					{
+						"internalType": "uint8[16]",
+						"name": "key",
+						"type": "uint8[16]"
+					}
+				],
+				"name": "aes_enc",
+				"outputs": [
+					{
+						"internalType": "uint8[16]",
+						"name": "",
+						"type": "uint8[16]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes",
+						"name": "cipher",
+						"type": "bytes"
+					},
+					{
+						"internalType": "bytes",
+						"name": "key",
+						"type": "bytes"
+					},
+					{
+						"internalType": "bytes",
+						"name": "iv",
+						"type": "bytes"
+					},
+					{
+						"internalType": "bytes",
+						"name": "auth_data",
+						"type": "bytes"
+					}
+				],
+				"name": "aes_gcm_dec",
+				"outputs": [
+					{
+						"internalType": "bytes",
+						"name": "plain",
+						"type": "bytes"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes",
+						"name": "in_bytes",
+						"type": "bytes"
+					}
+				],
+				"name": "bytes_to_uint128_array_w_padding",
+				"outputs": [
+					{
+						"internalType": "uint128[]",
+						"name": "",
+						"type": "uint128[]"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint128[]",
+						"name": "uint128_array",
+						"type": "uint128[]"
+					}
+				],
+				"name": "uint128_array_to_bytes",
+				"outputs": [
+					{
+						"internalType": "bytes",
+						"name": "",
+						"type": "bytes"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contract/AES/aes128-gcm.sol": "AES128_GCM"
+		},
+		"evmVersion": "cancun",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contract/AES/aes128-gcm.sol": {
+			"keccak256": "0x456c0be3cf320d42d96765ebb8eb59ad3f8dcb3f307c471cc04b18cf2b42d1e5",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://75025bf1ced60f146cbb9cccebf90ae54e7842f22e046dd26216f207f61ee042",
+				"dweb:/ipfs/QmX929bqzxBdmpPU66MHzYgx29MuDNnMDaU5K2HVunsVVs"
+			]
+		}
+	},
+	"version": 1
+}

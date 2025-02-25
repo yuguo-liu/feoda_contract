@@ -1,0 +1,94 @@
+{
+	"compiler": {
+		"version": "0.8.26+commit.8a97fa7a"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "uint8[16]",
+						"name": "cipher",
+						"type": "uint8[16]"
+					},
+					{
+						"internalType": "uint8[16]",
+						"name": "key",
+						"type": "uint8[16]"
+					}
+				],
+				"name": "dec",
+				"outputs": [
+					{
+						"internalType": "uint8[16]",
+						"name": "",
+						"type": "uint8[16]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint8[16]",
+						"name": "plain",
+						"type": "uint8[16]"
+					},
+					{
+						"internalType": "uint8[16]",
+						"name": "key",
+						"type": "uint8[16]"
+					}
+				],
+				"name": "enc",
+				"outputs": [
+					{
+						"internalType": "uint8[16]",
+						"name": "",
+						"type": "uint8[16]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contract/AES/aes128.sol": "AES128"
+		},
+		"evmVersion": "cancun",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contract/AES/aes128.sol": {
+			"keccak256": "0x240470596e06dcca39501e9f6059ce822426b9427de491d322bf64647c2984d2",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://5740aace6cb3c38346075d2dba072513f595df8eea41fb6fe74780ca8cbb2c41",
+				"dweb:/ipfs/QmdZQ6C8638L4kX8X6nhWGormXw6KBazVjgVYMkEELAqhs"
+			]
+		}
+	},
+	"version": 1
+}
