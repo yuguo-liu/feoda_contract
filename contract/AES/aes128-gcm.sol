@@ -6,6 +6,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+import "hardhat/console.sol";
+
 library GF128 {
     // 128 bit addition - xor operation
     function add(uint128 a, uint128 b) pure internal returns (uint128) {
@@ -414,17 +416,107 @@ contract AES128_GCM {
     function uint128_array_to_bytes(uint128[] memory uint128_array) public pure returns(bytes memory) {
         bytes memory uint128_bytes = abi.encodePacked(bytes16(uint128_array[0]));
         for (uint i = 1; i < uint128_array.length; i++) {
-            uint128_bytes = bytes.concat(uint128_bytes, abi.encodePacked(uint128_array[1]));
+            uint128_bytes = bytes.concat(uint128_bytes, abi.encodePacked(uint128_array[i]));
         }
         return uint128_bytes;
+    }
+
+    function uint8_array_to_uint128(uint8[16] memory uint8_array) public pure returns(uint128) {
+        uint128 ret = uint128(uint8_array[0]);
+        for (uint i = 1; i < 16; i++) {
+            ret = ret << 8;
+            ret += uint128(uint8_array[i]);
+        }
+        return ret;
+    }
+
+    function uint128_to_uint8_array(uint128 num) public pure returns(uint8[16] memory array) {
+        for (uint i = 0; i < 16; i++) {
+            array[15 - i] = uint8(num >> (8 * i));
+        }
     }
 
     function aes_gcm_dec(
         bytes memory cipher,
         bytes memory key,
         bytes memory iv,
-        bytes memory auth_data
+        bytes memory auth_data,
+        bytes memory auth_tag
     ) public view returns (bytes memory plain) {
+        // get the length of ciphertext and authencated data to construct the ghash input
+        uint256 len_cipher = cipher.length * 8;
+        uint256 len_auth_data = auth_data.length * 8;
 
+        uint128 len_a_c = uint128(len_auth_data << 64 + len_cipher);
+        uint128[] memory cipher_int = bytes_to_uint128_array_w_padding(cipher);
+        uint128[] memory auth_data_int = bytes_to_uint128_array_w_padding(auth_data);
+        uint128[] memory key_int = bytes_to_uint128_array_w_padding(key);
+        uint128[] memory iv_int = bytes_to_uint128_array_w_padding(iv);
+        uint128 counter_0 = iv_int[0] + 1;
+        uint128[] memory auth_tag_int = bytes_to_uint128_array_w_padding(auth_tag);
+
+        uint128[1] memory zero = [uint128(0)];
+        uint128 h = uint8_array_to_uint128(
+            aes_enc(
+                uint128_to_uint8_array(zero[0]), 
+                uint128_to_uint8_array(key_int[0])
+            )
+        );
+        uint128 counter_0_enc = uint8_array_to_uint128(
+            aes_enc(
+                uint128_to_uint8_array(counter_0),
+                uint128_to_uint8_array(key_int[0])
+            )
+        );
+
+        // cal the ghash
+        uint128 ghash = 0;
+        for (uint256 i = 0; i < auth_data_int.length; i++) {
+            ghash = GF128.mul(
+                GF128.add(
+                    ghash, 
+                    auth_data_int[i]
+                ), 
+                h
+            );
+        }
+        for (uint256 i = 0; i < cipher_int.length; i++) {
+            ghash = GF128.mul(
+                GF128.add(
+                    ghash, 
+                    cipher_int[i]
+                ), 
+                h
+            );
+        }
+        ghash = GF128.mul(
+            GF128.add(
+                ghash,
+                len_a_c
+            ),
+            h
+        );
+        ghash = GF128.add(ghash, counter_0_enc);
+
+        console.log(ghash);
+
+        require(ghash == auth_tag_int[0], "invalid auth tag");
+
+        // decryption
+        uint128 counter = counter_0 + 1;
+        uint128[] memory plain_int = new uint128[](cipher_int.length);
+
+        for (uint i = 0; i < plain_int.length; i++) {
+            uint128 counter_enc = uint8_array_to_uint128(
+                aes_enc(
+                    uint128_to_uint8_array(counter),
+                    uint128_to_uint8_array(key_int[0])
+                )
+            );
+            plain_int[i] = GF128.add(counter_enc, cipher_int[i]);
+            counter++;
+        }
+
+        return uint128_array_to_bytes(plain_int);
     }
 }
