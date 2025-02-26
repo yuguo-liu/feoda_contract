@@ -9,30 +9,29 @@ pragma solidity ^0.8.0;
 import "hardhat/console.sol";
 
 library GF128 {
+    uint128 constant IRREDUCIBLE_POLY = 0xE1000000000000000000000000000000;
+
     // 128 bit addition - xor operation
     function add(uint128 a, uint128 b) pure internal returns (uint128) {
         return a ^ b;
     }
 
-    // 128 bit multiplication - modular
-    // Reduced polynomial is 0x87 (i.e. x^8 + x^7 + x^6 + x^4 + x^3 + x^1 + 1)
-    function mul(uint128 a, uint128 b) pure internal returns (uint128) {
-        uint128 result = 0;
-        uint128 modulus = 0x87;  // Reduced polynomial of AES
+    function mul(uint128 x, uint128 y) pure internal returns (uint128) {
+        uint128 res = 0;
 
-        for (uint8 i = 0; i < 128; i++) {
-            if (b & 1 != 0) {
-                result ^= a;  // if the lsb of b is 1, added by a
+        for (int i = 127; i >= 0; i--) {
+            res ^= x * ((y >> uint(i)) & 1);
+
+            bool carry = (x & 1) != 0;
+            x = x >> 1;
+            if (carry) {
+                x ^= IRREDUCIBLE_POLY;
             }
-            // step of multiply: left shift a and check whether to be mod
-            bool high_bit_set = (a >> 127) != 0;
-            a <<= 1;
-            if (high_bit_set) {
-                a ^= modulus;  // if the msb of a is 1, subtracted by modulus
-            }
-            b >>= 1;  // b shift left by 1 bit
+            // console.log(uint(i), " res: ", res);
         }
-        return result;
+        // console.log("loop out!");
+
+        return res;
     }
 }
 
@@ -471,7 +470,7 @@ contract AES128_GCM {
                 uint128_to_uint8_array(key_int[0])
             )
         );
-        // console.log("h:");
+        console.log("h: ", h);
         // console.log(h);
         // console.log("counter 0 enc:");
         // console.log(counter_0_enc);
@@ -479,6 +478,8 @@ contract AES128_GCM {
         // cal the ghash
         uint128 ghash = 0;
         for (uint256 i = 0; i < auth_data_int.length; i++) {
+            console.log("ghash: ", ghash);
+            console.log("auth_data: ", auth_data_int[i]);
             ghash = GF128.mul(
                 GF128.add(
                     ghash, 
@@ -488,6 +489,8 @@ contract AES128_GCM {
             );
         }
         for (uint256 i = 0; i < cipher_int.length; i++) {
+            console.log("ghash: ", ghash);
+            console.log("cipher: ", cipher_int[i]);
             ghash = GF128.mul(
                 GF128.add(
                     ghash, 
@@ -503,13 +506,13 @@ contract AES128_GCM {
             ),
             h
         );
-
-        // console.log(ghash);
+        console.log("ghash: ", ghash);
 
         ghash = GF128.add(ghash, counter_0_enc);
 
-        // console.log(ghash);
-        // console.log(auth_tag_int[0]);
+        console.log("ghash: ", ghash);
+
+        console.log("tag: ", auth_tag_int[0]);
 
         require(auth_tag_int[0] > 0, "invalid auth tag");
 
