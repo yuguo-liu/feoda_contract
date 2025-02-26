@@ -114,6 +114,30 @@
 			{
 				"inputs": [
 					{
+						"internalType": "uint128",
+						"name": "a",
+						"type": "uint128"
+					},
+					{
+						"internalType": "uint128",
+						"name": "b",
+						"type": "uint128"
+					}
+				],
+				"name": "test_galois_mul",
+				"outputs": [
+					{
+						"internalType": "uint128",
+						"name": "c",
+						"type": "uint128"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "uint128[]",
 						"name": "uint128_array",
 						"type": "uint128[]"
@@ -197,11 +221,11 @@
 	},
 	"sources": {
 		"contract/AES/aes128-gcm.sol": {
-			"keccak256": "0x2bcab9326619f72e27e26b56ca94f465e12738407c16439430ab59d5815ed8b0",
+			"keccak256": "0x072b72db8e3c72d1e3cd4e5328a92b5a077e5b396a8f695c1943b71b194a6be2",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://20c7c702333bc26ae78206996d003b377ef0cbca0a3fa30e2b96547bbc9e428e",
-				"dweb:/ipfs/QmNkb6GrHNQWAakc5PD1KrxToBYMWePngLm8uhofEFWXhJ"
+				"bzz-raw://683838bfa09876063e07d3704e34f955eff3903b20abd50ff21eeab2735c4ba3",
+				"dweb:/ipfs/Qmaf74Chsm2hxAPgBwrhiA4JDQJXvNG1g3EC1WFD634xyB"
 			]
 		},
 		"hardhat/console.sol": {
