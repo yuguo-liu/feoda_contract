@@ -21,6 +21,11 @@
 						"internalType": "uint256",
 						"name": "_exchangeRate",
 						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_timeout",
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "nonpayable",
@@ -175,6 +180,19 @@
 						"internalType": "address",
 						"name": "",
 						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "contract_time",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -339,6 +357,58 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "message",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "uint256",
+						"name": "r",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "s",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "Qx",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "Qy",
+						"type": "uint256"
+					}
+				],
+				"name": "testSignature",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "timeout",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "totalAmount",
 				"outputs": [
@@ -349,6 +419,13 @@
 					}
 				],
 				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "transferToAliceTimeout",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -475,6 +552,14 @@
 		"remappings": []
 	},
 	"sources": {
+		"contract/AES/aes128-gcm.sol": {
+			"keccak256": "0x2b7a282068244fc11efbeb038ec79f4b6b44f5a76542479fd25c36bc57ad4e30",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://7fe3e212105bee05a219c795251fbfb6468c1bc55e0c1fa18c3d3b52c1723039",
+				"dweb:/ipfs/QmUfy8VvwMJEk71H7N1H3Hwya1H8GabBWGV3yHV6zgahFS"
+			]
+		},
 		"contract/Wesolowski-VDF/BigNumber.sol": {
 			"keccak256": "0x9c3b9cc4b39fa1e7d3232a840e08996244e84295911311ef5a1b5c3844e83d94",
 			"license": "MIT",
@@ -491,12 +576,28 @@
 				"dweb:/ipfs/QmV9TekRtqgBUKBXfBSdHyy7hiCV6ByuakcwZyoUXchMh9"
 			]
 		},
-		"contract/feoda.sol": {
-			"keccak256": "0x512652d2fad98304c4ec249a04cb1b05c799511ae5348e6b60d1d43eb6291f4a",
+		"contract/ecdsa/FCL_ecdsa.sol": {
+			"keccak256": "0x48cc7066a6d2dd04e9dcc82b10fc4f3e107e3141ed213ee196bb10caf86bcad0",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://b3dc070858a30934038771c1d18fdfba1efcc9187a40c25b6defb5f2cfc13e96",
-				"dweb:/ipfs/QmSg1x1P2CYb6vSGGtezcPbmXS4RWvPcDe3ju5GJR9TybC"
+				"bzz-raw://faf614f3d12b937ada84d5f2567bc3e3ff3a608307b5234e885106bf5f505401",
+				"dweb:/ipfs/QmaojAsACYRLKyuraatfbDA5eCwqNCgDaVzzj437KPBLaQ"
+			]
+		},
+		"contract/ecdsa/FCL_elliptic.sol": {
+			"keccak256": "0xee6c167a7ec7ca4f60db5baa8491692b2c3724b673f1f2bb635313c71cf633f3",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://959675f06ede27bb210eb0175f4275bce9cfa65b4329ad071f60d367f8361cac",
+				"dweb:/ipfs/QmXxWbfgXxu2GCLWjdYYj7AYKbbfQq4kdJQf1aQijJ5kaA"
+			]
+		},
+		"contract/feoda.sol": {
+			"keccak256": "0xbc78ce363fd4e86d53e616c64fb0bc97afb664c19c6b0620846aefc70f0d74e5",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://0f4e982da98cd1106a88e2a6fb78e769ca0e5d71a7bf45c0ea4e461f65184c0a",
+				"dweb:/ipfs/QmUSuaS4jA4LcV9Kci8vF5wHsZ2Kzou9G8DwSdHZ54LTg4"
 			]
 		}
 	},
