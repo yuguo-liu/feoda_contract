@@ -1,0 +1,61 @@
+{
+	"compiler": {
+		"version": "0.8.26+commit.8a97fa7a"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contract/ecdsa/FCL_ecdsa.sol": "FCL_ecdsa"
+		},
+		"evmVersion": "cancun",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contract/ecdsa/FCL_ecdsa.sol": {
+			"keccak256": "0x493fc2bcdf14ec6d0b51c80ad5f6755789ac79fa0679cb8f63244b45116a9504",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://59282d620f5d357c26a5145747b73c3704c3f34207687fa1a7a26877d2e465f5",
+				"dweb:/ipfs/QmWV6FKzGkHzyesrjfNiTF6BxMa7jyfNQL7YGxKs2CgLNf"
+			]
+		},
+		"contract/ecdsa/FCL_elliptic.sol": {
+			"keccak256": "0xee6c167a7ec7ca4f60db5baa8491692b2c3724b673f1f2bb635313c71cf633f3",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://959675f06ede27bb210eb0175f4275bce9cfa65b4329ad071f60d367f8361cac",
+				"dweb:/ipfs/QmXxWbfgXxu2GCLWjdYYj7AYKbbfQq4kdJQf1aQijJ5kaA"
+			]
+		},
+		"hardhat/console.sol": {
+			"keccak256": "0xf2560b5386574153057104d19a9e68a32ee912cf23c0c8df1fe9a0607f42d543",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://a63166e036b040826baa513772451a79925daa304b38749100efb089ac07cdc2",
+				"dweb:/ipfs/QmUtMTxUFKU6a5oFXsEJnTPvb3QPb7GDDmSv5yZ1jFHDwR"
+			]
+		}
+	},
+	"version": 1
+}

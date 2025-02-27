@@ -22,7 +22,7 @@ pragma solidity >=0.8.19 <0.9.0;
 
 
 import {FCL_Elliptic_ZZ} from "./FCL_elliptic.sol";
-
+import "hardhat/console.sol";
 
 
 library FCL_ecdsa {
@@ -39,13 +39,19 @@ library FCL_ecdsa {
      */
     function ecdsa_verify(bytes32 message, uint256 r, uint256 s, uint256 Qx, uint256 Qy)  internal view returns (bool){
 
+        console.log("0");
+
         if (r == 0 || r >= FCL_Elliptic_ZZ.n || s == 0 || s >= FCL_Elliptic_ZZ.n) {
             return false;
         }
         
+        console.log("1");
+
         if (!FCL_Elliptic_ZZ.ecAff_isOnCurve(Qx, Qy)) {
             return false;
         }
+
+        console.log("2");
 
         uint256 sInv = FCL_Elliptic_ZZ.FCL_nModInv(s);
 

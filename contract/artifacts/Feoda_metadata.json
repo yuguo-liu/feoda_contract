@@ -577,11 +577,11 @@
 			]
 		},
 		"contract/ecdsa/FCL_ecdsa.sol": {
-			"keccak256": "0x48cc7066a6d2dd04e9dcc82b10fc4f3e107e3141ed213ee196bb10caf86bcad0",
+			"keccak256": "0x493fc2bcdf14ec6d0b51c80ad5f6755789ac79fa0679cb8f63244b45116a9504",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://faf614f3d12b937ada84d5f2567bc3e3ff3a608307b5234e885106bf5f505401",
-				"dweb:/ipfs/QmaojAsACYRLKyuraatfbDA5eCwqNCgDaVzzj437KPBLaQ"
+				"bzz-raw://59282d620f5d357c26a5145747b73c3704c3f34207687fa1a7a26877d2e465f5",
+				"dweb:/ipfs/QmWV6FKzGkHzyesrjfNiTF6BxMa7jyfNQL7YGxKs2CgLNf"
 			]
 		},
 		"contract/ecdsa/FCL_elliptic.sol": {
@@ -598,6 +598,14 @@
 			"urls": [
 				"bzz-raw://0f4e982da98cd1106a88e2a6fb78e769ca0e5d71a7bf45c0ea4e461f65184c0a",
 				"dweb:/ipfs/QmUSuaS4jA4LcV9Kci8vF5wHsZ2Kzou9G8DwSdHZ54LTg4"
+			]
+		},
+		"hardhat/console.sol": {
+			"keccak256": "0xf2560b5386574153057104d19a9e68a32ee912cf23c0c8df1fe9a0607f42d543",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://a63166e036b040826baa513772451a79925daa304b38749100efb089ac07cdc2",
+				"dweb:/ipfs/QmUtMTxUFKU6a5oFXsEJnTPvb3QPb7GDDmSv5yZ1jFHDwR"
 			]
 		}
 	},
