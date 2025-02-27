@@ -151,9 +151,9 @@ contract Feoda {
         return true;
     }
 
-    function testSignature(bytes32 message, uint256 r, uint256 s, uint256 Qx, uint256 Qy) external view returns (bool) {
+    function testSignature(bytes memory message, uint256 r, uint256 s, uint256 Qx, uint256 Qy) external view returns (bool) {
         return FCL_ecdsa.ecdsa_verify(
-            message,
+            sha256(message),
             r, s, Qx, Qy
         );
     }

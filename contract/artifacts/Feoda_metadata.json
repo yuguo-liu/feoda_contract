@@ -359,9 +359,9 @@
 			{
 				"inputs": [
 					{
-						"internalType": "bytes32",
+						"internalType": "bytes",
 						"name": "message",
-						"type": "bytes32"
+						"type": "bytes"
 					},
 					{
 						"internalType": "uint256",
@@ -593,11 +593,11 @@
 			]
 		},
 		"contract/feoda.sol": {
-			"keccak256": "0xbc78ce363fd4e86d53e616c64fb0bc97afb664c19c6b0620846aefc70f0d74e5",
+			"keccak256": "0xea25d479f9f29414991052e2f87505e808942364afb625497dd010f905cd0db5",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://0f4e982da98cd1106a88e2a6fb78e769ca0e5d71a7bf45c0ea4e461f65184c0a",
-				"dweb:/ipfs/QmUSuaS4jA4LcV9Kci8vF5wHsZ2Kzou9G8DwSdHZ54LTg4"
+				"bzz-raw://3fadae31ca559f72b7e4152002ae2d8aa03e9d6905f22e8f584583c858e365c8",
+				"dweb:/ipfs/QmV4PdjCoDiGJ8bJBSNft2QhqYMvAJZHrSjs9NX4mnMVgy"
 			]
 		},
 		"hardhat/console.sol": {
