@@ -2,6 +2,7 @@
 pragma solidity ^0.8.0;
 
 import "./Wesolowski-VDF/WesolowskiVDFVerifier.sol";
+import "./AES/aes128-gcm.sol";
 
 contract Feoda {
     // definition of tre
