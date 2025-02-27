@@ -6,8 +6,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "hardhat/console.sol";
-
 library GF128 {
     uint128 constant IRREDUCIBLE_POLY = 0xE1000000000000000000000000000000;
 
@@ -113,6 +111,17 @@ contract AES128_GCM {
     //event State(uint8[4][4] state);
     using GF128 for uint128;
     using BytesLib for bytes;
+
+    uint128 private len_a_c;
+    uint128[] private cipher_int;
+    uint128[] private auth_data_int;
+    uint128[] private key_int;
+    uint128 private counter_0;
+    uint128[] private auth_tag_int;
+
+    bool public is_upload_cipher = false;
+    bool public is_verified = false;
+    bool public is_pass_the_verification = false;
     
     uint8 [11] RCON = [0x8d, 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1b, 0x36];
     
@@ -189,43 +198,43 @@ contract AES128_GCM {
          0x66, 0xb2, 0x76, 0x60, 0xda, 0xc5, 0xf3, 0xf6, 0xaa, 0xcd, 0x9a, 0xa0, 0x75, 0x54, 0x0e, 0x01];
     
 
-    function aes_dec (uint8[16] memory cipher, uint8[16] memory key) public view returns (uint8 [16] memory) {
-        uint8[4][4] memory state =
-        [
-            [cipher[0], cipher[4], cipher[8], cipher[12]],
-            [cipher[1], cipher[5], cipher[9], cipher[13]],
-            [cipher[2], cipher[6], cipher[10], cipher[14]],
-            [cipher[3], cipher[7], cipher[11], cipher[15]]
-        ];
-        uint8 [4][44] memory expanded_key = expand_key(key);
-        // round 11
-        uint8 [4][4] memory round_key = [expanded_key[40],expanded_key[41],expanded_key[42],expanded_key[43]];
-        state = add_round_key(state, round_key);
-        // round 10 ~ 1
-        for (uint r = 9; r >= 1; r--) {
-            state = inv_shift_rows(state);
-            //emit State(state);
-            state = inv_sub_state(state);
-            //emit State(state);
-            round_key = [expanded_key[4*r],expanded_key[4*r+1],expanded_key[4*r+2],expanded_key[4*r+3]];
-            state = add_round_key(state, round_key);
-            //emit State(state);
-            state = inv_mix_columns(state);
-            //emit State(state);
-        }
-        // round 0x0
-        state = inv_shift_rows(state);
-        state = inv_sub_state(state);
-        round_key = [expanded_key[0],expanded_key[1],expanded_key[2],expanded_key[3]];
-        state = add_round_key(state, round_key);
-        uint8[16] memory plain = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-        for (uint i = 0; i < 4; i++) {
-            for (uint j = 0; j < 4; j++) {
-                plain[4*i + j] = state[j][i];
-            }
-        }
-        return plain;
-    }
+    // function aes_dec (uint8[16] memory cipher, uint8[16] memory key) private view returns (uint8 [16] memory) {
+    //     uint8[4][4] memory state =
+    //     [
+    //         [cipher[0], cipher[4], cipher[8], cipher[12]],
+    //         [cipher[1], cipher[5], cipher[9], cipher[13]],
+    //         [cipher[2], cipher[6], cipher[10], cipher[14]],
+    //         [cipher[3], cipher[7], cipher[11], cipher[15]]
+    //     ];
+    //     uint8 [4][44] memory expanded_key = expand_key(key);
+    //     // round 11
+    //     uint8 [4][4] memory round_key = [expanded_key[40],expanded_key[41],expanded_key[42],expanded_key[43]];
+    //     state = add_round_key(state, round_key);
+    //     // round 10 ~ 1
+    //     for (uint r = 9; r >= 1; r--) {
+    //         state = inv_shift_rows(state);
+    //         //emit State(state);
+    //         state = inv_sub_state(state);
+    //         //emit State(state);
+    //         round_key = [expanded_key[4*r],expanded_key[4*r+1],expanded_key[4*r+2],expanded_key[4*r+3]];
+    //         state = add_round_key(state, round_key);
+    //         //emit State(state);
+    //         state = inv_mix_columns(state);
+    //         //emit State(state);
+    //     }
+    //     // round 0x0
+    //     state = inv_shift_rows(state);
+    //     state = inv_sub_state(state);
+    //     round_key = [expanded_key[0],expanded_key[1],expanded_key[2],expanded_key[3]];
+    //     state = add_round_key(state, round_key);
+    //     uint8[16] memory plain = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+    //     for (uint i = 0; i < 4; i++) {
+    //         for (uint j = 0; j < 4; j++) {
+    //             plain[4*i + j] = state[j][i];
+    //         }
+    //     }
+    //     return plain;
+    // }
     
     function add_round_key(uint8 [4][4] memory state, uint8 [4][4] memory round_key) private pure returns (uint8 [4][4] memory) {
         for (uint i = 0; i < 4; i++) {
@@ -236,36 +245,36 @@ contract AES128_GCM {
         return state;
     }
     
-    function inv_shift_rows(uint8 [4][4] memory state) private pure returns (uint8 [4][4] memory) {
-        uint8[4] memory s_0 = state[0];
-        uint8[4] memory s_1 = [state[1][3], state[1][0], state[1][1], state[1][2]];
-        uint8[4] memory s_2 = [state[2][2], state[2][3], state[2][0], state[2][1]];
-        uint8[4] memory s_3 = [state[3][1], state[3][2], state[3][3], state[3][0]];
-        return [s_0, s_1, s_2, s_3];
-    }
+    // function inv_shift_rows(uint8 [4][4] memory state) private pure returns (uint8 [4][4] memory) {
+    //     uint8[4] memory s_0 = state[0];
+    //     uint8[4] memory s_1 = [state[1][3], state[1][0], state[1][1], state[1][2]];
+    //     uint8[4] memory s_2 = [state[2][2], state[2][3], state[2][0], state[2][1]];
+    //     uint8[4] memory s_3 = [state[3][1], state[3][2], state[3][3], state[3][0]];
+    //     return [s_0, s_1, s_2, s_3];
+    // }
     
-    function inv_sub_state(uint8 [4][4] memory state) private view returns (uint8 [4][4] memory) {
-        for (uint i = 0; i < 4; i++) {
-            for (uint j = 0; j < 4; j++) {
-                state[i][j] = INV_SBOX[state[i][j]];
-            }
-        }
-        return state; 
-    }
+    // function inv_sub_state(uint8 [4][4] memory state) private view returns (uint8 [4][4] memory) {
+    //     for (uint i = 0; i < 4; i++) {
+    //         for (uint j = 0; j < 4; j++) {
+    //             state[i][j] = INV_SBOX[state[i][j]];
+    //         }
+    //     }
+    //     return state; 
+    // }
     
-    function inv_mix_columns(uint8 [4][4] memory state) private view returns (uint8 [4][4] memory) {
-        uint8[4][4] memory cpy = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
-        for (uint i = 0; i < 4; i++) {
-            for (uint row = 0; row < 4; row++) {
-                cpy[row][i] = state[row][i];
-            }
-            state[0][i] = gal_mul(cpy[0][i], 14) ^ gal_mul(cpy[3][i], 9) ^ gal_mul(cpy[2][i], 13) ^ gal_mul(cpy[1][i], 11);
-            state[1][i] = gal_mul(cpy[1][i], 14) ^ gal_mul(cpy[0][i], 9) ^ gal_mul(cpy[3][i], 13) ^ gal_mul(cpy[2][i], 11);
-            state[2][i] = gal_mul(cpy[2][i], 14) ^ gal_mul(cpy[1][i], 9) ^ gal_mul(cpy[0][i], 13) ^ gal_mul(cpy[3][i], 11);
-            state[3][i] = gal_mul(cpy[3][i], 14) ^ gal_mul(cpy[2][i], 9) ^ gal_mul(cpy[1][i], 13) ^ gal_mul(cpy[0][i], 11);
-        }
-        return state;
-    }
+    // function inv_mix_columns(uint8 [4][4] memory state) private view returns (uint8 [4][4] memory) {
+    //     uint8[4][4] memory cpy = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
+    //     for (uint i = 0; i < 4; i++) {
+    //         for (uint row = 0; row < 4; row++) {
+    //             cpy[row][i] = state[row][i];
+    //         }
+    //         state[0][i] = gal_mul(cpy[0][i], 14) ^ gal_mul(cpy[3][i], 9) ^ gal_mul(cpy[2][i], 13) ^ gal_mul(cpy[1][i], 11);
+    //         state[1][i] = gal_mul(cpy[1][i], 14) ^ gal_mul(cpy[0][i], 9) ^ gal_mul(cpy[3][i], 13) ^ gal_mul(cpy[2][i], 11);
+    //         state[2][i] = gal_mul(cpy[2][i], 14) ^ gal_mul(cpy[1][i], 9) ^ gal_mul(cpy[0][i], 13) ^ gal_mul(cpy[3][i], 11);
+    //         state[3][i] = gal_mul(cpy[3][i], 14) ^ gal_mul(cpy[2][i], 9) ^ gal_mul(cpy[1][i], 13) ^ gal_mul(cpy[0][i], 11);
+    //     }
+    //     return state;
+    // }
     
     function gal_mul(uint8 x, uint8 y) private view returns (uint8) {
         if (x == 0 || y == 0) {
@@ -354,7 +363,7 @@ contract AES128_GCM {
         return state;
     }
 
-    function aes_enc(uint8[16] memory plain, uint8[16] memory key) public view returns (uint8[16] memory) {
+    function aes_enc(uint8[16] memory plain, uint8[16] memory key) private view returns (uint8[16] memory) {
         uint8[4][4] memory state = [
             [plain[0], plain[4], plain[8], plain[12]],
             [plain[1], plain[5], plain[9], plain[13]],
@@ -390,7 +399,7 @@ contract AES128_GCM {
         return cipher;
     }
 
-    function bytes_to_uint128_array_w_padding(bytes memory in_bytes) public pure returns(uint128[] memory) {
+    function bytes_to_uint128_array_w_padding(bytes memory in_bytes) private pure returns(uint128[] memory) {
         uint length = in_bytes.length;
         uint padding_length = 16 - length % 16;
         if (padding_length == 16) padding_length = 0;
@@ -412,7 +421,7 @@ contract AES128_GCM {
         return uint128_array;
     }
 
-    function uint128_array_to_bytes(uint128[] memory uint128_array) public pure returns(bytes memory) {
+    function uint128_array_to_bytes(uint128[] memory uint128_array) private pure returns(bytes memory) {
         bytes memory uint128_bytes = abi.encodePacked(bytes16(uint128_array[0]));
         for (uint i = 1; i < uint128_array.length; i++) {
             uint128_bytes = bytes.concat(uint128_bytes, abi.encodePacked(uint128_array[i]));
@@ -420,7 +429,7 @@ contract AES128_GCM {
         return uint128_bytes;
     }
 
-    function uint8_array_to_uint128(uint8[16] memory uint8_array) public pure returns(uint128) {
+    function uint8_array_to_uint128(uint8[16] memory uint8_array) private pure returns(uint128) {
         uint128 ret = uint128(uint8_array[0]);
         for (uint i = 1; i < 16; i++) {
             ret = ret << 8;
@@ -429,35 +438,38 @@ contract AES128_GCM {
         return ret;
     }
 
-    function uint128_to_uint8_array(uint128 num) public pure returns(uint8[16] memory array) {
+    function uint128_to_uint8_array(uint128 num) private pure returns(uint8[16] memory array) {
         for (uint i = 0; i < 16; i++) {
             array[15 - i] = uint8(num >> (8 * i));
         }
     }
 
-    function aes_gcm_dec(
-        bytes memory cipher,
-        bytes memory key,
-        bytes memory iv,
-        bytes memory auth_data,
-        bytes memory auth_tag
-    ) public view returns (bytes memory plain) {
-        // get the length of ciphertext and authencated data to construct the ghash input
-        uint256 len_cipher = cipher.length * 8;
-        uint256 len_auth_data = auth_data.length * 8;
+    function aes_gcm_set(
+        bytes memory _cipher,
+        bytes memory _key,
+        bytes memory _iv,
+        bytes memory _auth_data,
+        bytes memory _auth_tag
+    ) public {
+        uint128 len_cipher    = uint128(_cipher.length * 8);
+        uint128 len_auth_data = uint128(_auth_data.length * 8);
 
-        uint128 len_a_c = uint128(len_auth_data << 64 + len_cipher);
-        uint128[] memory cipher_int = bytes_to_uint128_array_w_padding(cipher);
-        uint128[] memory auth_data_int = bytes_to_uint128_array_w_padding(auth_data);
-        uint128[] memory key_int = bytes_to_uint128_array_w_padding(key);
-        uint128[] memory iv_int = bytes_to_uint128_array_w_padding(iv);
-        uint128 counter_0 = iv_int[0] + 1;
-        uint128[] memory auth_tag_int = bytes_to_uint128_array_w_padding(auth_tag);
+        len_a_c       = (len_auth_data << 64) + len_cipher;
+        cipher_int    = bytes_to_uint128_array_w_padding(_cipher);
+        auth_data_int = bytes_to_uint128_array_w_padding(_auth_data);
+        key_int       = bytes_to_uint128_array_w_padding(_key);
 
-        // console.log("key: ");
-        // console.log(key_int[0]);
-        // console.log("counter 0:");
-        // console.log(counter_0);
+        uint128[] memory iv_int = bytes_to_uint128_array_w_padding(_iv);
+
+        counter_0                = iv_int[0] + 1;
+        auth_tag_int             = bytes_to_uint128_array_w_padding(_auth_tag);
+        is_upload_cipher         = true;
+        is_pass_the_verification = false;
+        is_verified              = false;
+    }
+
+    function aes_gcm_verify() public returns (bool) {
+        require(is_upload_cipher, "call the function 'aes_gcm_set' first");
         uint128 h = uint8_array_to_uint128(
             aes_enc(
                 uint128_to_uint8_array(uint128(0)), 
@@ -470,16 +482,10 @@ contract AES128_GCM {
                 uint128_to_uint8_array(key_int[0])
             )
         );
-        console.log("h: ", h);
-        // console.log(h);
-        // console.log("counter 0 enc:");
-        // console.log(counter_0_enc);
 
         // cal the ghash
         uint128 ghash = 0;
         for (uint256 i = 0; i < auth_data_int.length; i++) {
-            console.log("ghash: ", ghash);
-            console.log("auth_data: ", auth_data_int[i]);
             ghash = GF128.mul(
                 GF128.add(
                     ghash, 
@@ -489,8 +495,6 @@ contract AES128_GCM {
             );
         }
         for (uint256 i = 0; i < cipher_int.length; i++) {
-            console.log("ghash: ", ghash);
-            console.log("cipher: ", cipher_int[i]);
             ghash = GF128.mul(
                 GF128.add(
                     ghash, 
@@ -506,15 +510,17 @@ contract AES128_GCM {
             ),
             h
         );
-        console.log("ghash: ", ghash);
 
         ghash = GF128.add(ghash, counter_0_enc);
 
-        console.log("ghash: ", ghash);
+        is_verified = true;
+        is_pass_the_verification = (ghash == auth_tag_int[0]);
+        return is_pass_the_verification;
+    }
 
-        console.log("tag: ", auth_tag_int[0]);
-
-        require(auth_tag_int[0] > 0, "invalid auth tag");
+    function aes_gcm_dec() public view returns (bytes memory plain) {
+        require(is_verified, "call the function 'aes_gcm_verify' first");
+        require(is_pass_the_verification, "auth tag is invalid");
 
         // decryption
         uint128 counter = counter_0 + 1;
@@ -532,9 +538,5 @@ contract AES128_GCM {
         }
 
         return uint128_array_to_bytes(plain_int);
-    }
-
-    function test_galois_mul(uint128 a, uint128 b) public pure returns(uint128 c){
-        c = GF128.mul(a, b);
     }
 }

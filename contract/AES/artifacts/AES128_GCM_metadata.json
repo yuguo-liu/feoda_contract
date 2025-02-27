@@ -6,81 +6,7 @@
 	"output": {
 		"abi": [
 			{
-				"inputs": [
-					{
-						"internalType": "uint8[16]",
-						"name": "cipher",
-						"type": "uint8[16]"
-					},
-					{
-						"internalType": "uint8[16]",
-						"name": "key",
-						"type": "uint8[16]"
-					}
-				],
-				"name": "aes_dec",
-				"outputs": [
-					{
-						"internalType": "uint8[16]",
-						"name": "",
-						"type": "uint8[16]"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint8[16]",
-						"name": "plain",
-						"type": "uint8[16]"
-					},
-					{
-						"internalType": "uint8[16]",
-						"name": "key",
-						"type": "uint8[16]"
-					}
-				],
-				"name": "aes_enc",
-				"outputs": [
-					{
-						"internalType": "uint8[16]",
-						"name": "",
-						"type": "uint8[16]"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "bytes",
-						"name": "cipher",
-						"type": "bytes"
-					},
-					{
-						"internalType": "bytes",
-						"name": "key",
-						"type": "bytes"
-					},
-					{
-						"internalType": "bytes",
-						"name": "iv",
-						"type": "bytes"
-					},
-					{
-						"internalType": "bytes",
-						"name": "auth_data",
-						"type": "bytes"
-					},
-					{
-						"internalType": "bytes",
-						"name": "auth_tag",
-						"type": "bytes"
-					}
-				],
+				"inputs": [],
 				"name": "aes_gcm_dec",
 				"outputs": [
 					{
@@ -96,100 +22,85 @@
 				"inputs": [
 					{
 						"internalType": "bytes",
-						"name": "in_bytes",
+						"name": "_cipher",
 						"type": "bytes"
-					}
-				],
-				"name": "bytes_to_uint128_array_w_padding",
-				"outputs": [
-					{
-						"internalType": "uint128[]",
-						"name": "",
-						"type": "uint128[]"
-					}
-				],
-				"stateMutability": "pure",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint128",
-						"name": "a",
-						"type": "uint128"
 					},
 					{
-						"internalType": "uint128",
-						"name": "b",
-						"type": "uint128"
-					}
-				],
-				"name": "test_galois_mul",
-				"outputs": [
-					{
-						"internalType": "uint128",
-						"name": "c",
-						"type": "uint128"
-					}
-				],
-				"stateMutability": "pure",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint128[]",
-						"name": "uint128_array",
-						"type": "uint128[]"
-					}
-				],
-				"name": "uint128_array_to_bytes",
-				"outputs": [
+						"internalType": "bytes",
+						"name": "_key",
+						"type": "bytes"
+					},
 					{
 						"internalType": "bytes",
-						"name": "",
+						"name": "_iv",
+						"type": "bytes"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_auth_data",
+						"type": "bytes"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_auth_tag",
 						"type": "bytes"
 					}
 				],
-				"stateMutability": "pure",
+				"name": "aes_gcm_set",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
-				"inputs": [
-					{
-						"internalType": "uint128",
-						"name": "num",
-						"type": "uint128"
-					}
-				],
-				"name": "uint128_to_uint8_array",
+				"inputs": [],
+				"name": "aes_gcm_verify",
 				"outputs": [
 					{
-						"internalType": "uint8[16]",
-						"name": "array",
-						"type": "uint8[16]"
-					}
-				],
-				"stateMutability": "pure",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint8[16]",
-						"name": "uint8_array",
-						"type": "uint8[16]"
-					}
-				],
-				"name": "uint8_array_to_uint128",
-				"outputs": [
-					{
-						"internalType": "uint128",
+						"internalType": "bool",
 						"name": "",
-						"type": "uint128"
+						"type": "bool"
 					}
 				],
-				"stateMutability": "pure",
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "is_pass_the_verification",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "is_upload_cipher",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "is_verified",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			}
 		],
@@ -221,19 +132,11 @@
 	},
 	"sources": {
 		"contract/AES/aes128-gcm.sol": {
-			"keccak256": "0x7cf3fa164bd3e288e240c588c98d61af12a9a6616b9f6bd164a73c0e42f5be76",
+			"keccak256": "0x2b7a282068244fc11efbeb038ec79f4b6b44f5a76542479fd25c36bc57ad4e30",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://348d902b39bc7a782404c707caa1c89ce0da24a76763c6b572da42ce673308d5",
-				"dweb:/ipfs/QmWypELKY1HVuSLSnr67XjzuUdxKGCvMyuNuwnid7yvyjS"
-			]
-		},
-		"hardhat/console.sol": {
-			"keccak256": "0xf2560b5386574153057104d19a9e68a32ee912cf23c0c8df1fe9a0607f42d543",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://a63166e036b040826baa513772451a79925daa304b38749100efb089ac07cdc2",
-				"dweb:/ipfs/QmUtMTxUFKU6a5oFXsEJnTPvb3QPb7GDDmSv5yZ1jFHDwR"
+				"bzz-raw://7fe3e212105bee05a219c795251fbfb6468c1bc55e0c1fa18c3d3b52c1723039",
+				"dweb:/ipfs/QmUfy8VvwMJEk71H7N1H3Hwya1H8GabBWGV3yHV6zgahFS"
 			]
 		}
 	},
